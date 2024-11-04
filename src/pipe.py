@@ -55,7 +55,7 @@ class Pipe:
         self.pipe_thickness = pipe_thickness
         
         # Получение массы одного метра трубы из DataFrame
-        self.mass_per_meter = df[df['dn'] == pipe_dn].dropna(axis=1, how='all')[str(pipe_thickness).replace('.', ',')].values[0]
+        self.mass_per_meter = float(df[df['dn'] == pipe_dn].dropna(axis=1, how='all')[str(pipe_thickness).replace('.', ',')].values[0])
         
         # Расчет общей массы трубы
         self.pipe_mass = round(self.pipe_length * self.mass_per_meter, 2)
