@@ -1,4 +1,5 @@
 import pandas as pd
+from src.utils import get_df_data
 
 class Pipe:
     """
@@ -12,12 +13,6 @@ class Pipe:
         mass_per_meter (float): Масса одного метра трубы (кг).
         pipe_mass (float): Общая масса трубы (кг).
     """
-
-    __gost_paths = {
-        "ГОСТ 8732-78": "/home/jovyan/work/ts_jupyter/src/data/pipes/gost_8732-78.csv",
-        "ГОСТ 8734-75": "/home/jovyan/work/ts_jupyter/src/data/pipes/gost_8734-75.csv",
-        "ГОСТ 10704-91": "/home/jovyan/work/ts_jupyter/src/data/pipes/gost_10704-91.csv",
-    }
 
     def __init__(self, gost_name, pipe_dn, pipe_thickness, pipe_length):
         """
@@ -35,15 +30,9 @@ class Pipe:
         Исключения:
             ValueError: Если указанный ГОСТ не найден или входные параметры некорректны.
         """
-        # Проверка наличия ГОСТа в доступных путях
-        if gost_name not in self.__gost_paths:
-            raise ValueError(f"ГОСТ '{gost_name}' не найден в доступных путях.")
-        
+
         # Загрузка данных о трубах из CSV файла
-        relative_path = self.__gost_paths[gost_name]
-        df = pd.read_csv(relative_path, sep=";")
-        df = df.replace(',', '.', regex=True)  # Замена запятой на точку
-        df = df.apply(pd.to_numeric, errors='coerce')  # Приведение к числовому типу
+        df = get_df_data(gost_name)
 
         # Проверка корректности параметров трубы
         self.__check_pipe(df, pipe_dn, pipe_thickness)
