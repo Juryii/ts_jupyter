@@ -9,7 +9,9 @@ gost_paths = {
         "ГОСТ 10704-91": "/home/jovyan/work/ts_jupyter/src/data/pipes/gost_10704-91.csv", # трубы стальные электросварные прямошовные
 
         "ГОСТ 17375-2001": "/home/jovyan/work/ts_jupyter/src/data/elbows/gost_17375-2001.csv", # отводы
-        "ГОСТ 17376-2001": "/home/jovyan/work/ts_jupyter/src/data/tees/gost_17376-2001.csv" # тройники
+        "ГОСТ 17376-2001": "/home/jovyan/work/ts_jupyter/src/data/tees/gost_17376-2001.csv", # тройники
+
+        "ГОСТ 17378-2001": "/home/jovyan/work/ts_jupyter/src/data/transitions/gost_17378-2001.csv" # переходы
     }
 
 @lru_cache(maxsize=5)  # Хранить до 5 различных ГОСТов
