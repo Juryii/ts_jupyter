@@ -105,7 +105,11 @@ class PipeTransition:
             )
 
         if dn2 not in df['D1'].values:
-            raise ValueError(f"Диаметр {dn2} отсутствует в {gost_name}.")
+            available_diameters2 = df[df['D'] == dn1]['D1'].dropna().unique()
+            raise ValueError(
+                f"Диаметр {dn2} отсутствует в {gost_name}. "
+                f"Доступные диаметры для D={dn1}: {', '.join(map(str, available_diameters2))}."
+            )
 
         if thickness2 not in df[df['D1'] == dn2]['T1'].values:
             available_thicknesses2 = df[df['D1'] == dn2]['T1'].dropna().unique()
