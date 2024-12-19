@@ -35,6 +35,7 @@ class PipeTransition:
         """
         # Получение данных из ГОСТа
         df = get_df_data(gost_name)
+        df = df.apply(pd.to_numeric, errors='coerce')  # Приведение к числовому типу
 
         # Проверка входных данных на соответствие с ГОСТом
         checked_transition = self.__check_transition(df, dn1, thickness1, dn2, thickness2, gost_name)

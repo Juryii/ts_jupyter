@@ -38,6 +38,8 @@ class PipeTee():
         """
         # получение данных из ГОСТа
         df = get_df_data(gost_name)
+        df = df.apply(pd.to_numeric, errors='coerce')  # Приведение к числовому типу
+        
         # проверка входных данных на соответствие с данными в ГОСТе
         checked_tee = self.__check_tee(df, tee_dn1, tee_thicknes1, tee_dn2, tee_thicknes2, gost_name)
         

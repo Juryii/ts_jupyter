@@ -21,6 +21,7 @@ class PipeElbow:
         """
         # Загрузка данных об отводах из CSV файла
         df = get_df_data(gost_name)
+        df = df.apply(pd.to_numeric, errors='coerce')  # Приведение к числовому типу
 
         # Проверка корректности параметров отвода
         self.__check_elbow(df, elbow_dn, elbow_thickness, elbow_angle, gost_name)

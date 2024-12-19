@@ -33,6 +33,7 @@ class Pipe:
 
         # Загрузка данных о трубах из CSV файла
         df = get_df_data(gost_name)
+        df = df.apply(pd.to_numeric, errors='coerce')  # Приведение к числовому типу
 
         # Проверка корректности параметров трубы
         self.__check_pipe(df, pipe_dn, pipe_thickness)
