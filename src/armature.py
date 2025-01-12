@@ -1,7 +1,10 @@
 import pandas as pd
 from src.utils import get_df_data
 
+
 class Armature:
+    """Класс арматуры для трубопроводов."""
+
     def __init__(
         self,
         dn,
@@ -50,7 +53,7 @@ class Armature:
             f"рабочая среда - вода, температура рабочей среды\n"
             f"{self.t2}°C - {self.t1}°C, расчетная температура {self.t_r}°C\n"
             f"в комплекте:\n"
-            f"- ответные фланцы {self.dn}-{int(self.pn*10)}-11-1-В-Ст20-IV ГОСТ 33259-2015 - {self.flange_count} шт.\n"
+            f"- ответные фланцы {self.dn}-{int(self.pn * 10)}-11-1-В-Ст20-IV ГОСТ 33259-2015 - {self.flange_count} шт.\n"
             f"- прокладки спирально-навивные термостойкие СНП-Д-1-1-{self.dn}-{self.pn} ГОСТ Р 52376-2005 - {self.gasket_count} шт.\n"
         )
 

@@ -1,6 +1,7 @@
 import pandas as pd
 from src.utils import get_df_data
 
+
 class PipeTransition:
     """
     Класс для создания переходов трубопроводов.
@@ -17,6 +18,7 @@ class PipeTransition:
         mass_per_transition (float): Масса одного перехода (кг).
         total_mass (float): Общая масса переходов (кг).
     """
+
     def __init__(self, dn1, thickness1, dn2, thickness2, count, steel_grade="Сталь 20", gost_name="ГОСТ 17378-2001"):
         """
         Инициализирует объект PipeTransition.

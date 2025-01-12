@@ -1,5 +1,5 @@
-import pandas as pd
 from src.utils import get_df_data
+
 
 class PipeSupport:
     """
@@ -42,7 +42,6 @@ class PipeSupport:
         self.steel_grade = steel_grade
         self.gost_name = gost_name
         self.mass_per_support = float(checked_support['mass'])
-
 
     def __str__(self):
         """

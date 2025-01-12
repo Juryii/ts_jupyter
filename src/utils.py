@@ -4,21 +4,22 @@ import sys
 import pandas as pd
 from functools import lru_cache
 module_path = os.path.abspath(os.path.join('..'))
-if module_path not in sys.path:
-	sys.path.append(module_path)
+sys.path.append(module_path) if module_path not in sys.path else ""
+
 
 gost_paths = {
-        "ГОСТ 8732-78": "/src/data/pipes/gost_8732-78.csv", # трубы стальные бесшовные горячедеформированные
-        "ГОСТ 8734-75": "/src/data/pipes/gost_8734-75.csv", # трубы стальные бесшовные холоднодеформированные
-        "ГОСТ 10704-91": "/src/data/pipes/gost_10704-91.csv", # трубы стальные электросварные прямошовные
+    "ГОСТ 8732-78": "/src/data/pipes/gost_8732-78.csv",  # трубы стальные бесшовные горячедеформированные
+    "ГОСТ 8734-75": "/src/data/pipes/gost_8734-75.csv",  # трубы стальные бесшовные холоднодеформированные
+    "ГОСТ 10704-91": "/src/data/pipes/gost_10704-91.csv",  # трубы стальные электросварные прямошовные
 
-        "ГОСТ 17375-2001": "/src/data/elbows/gost_17375-2001.csv", # отводы
-        "ГОСТ 17376-2001": "/src/data/tees/gost_17376-2001.csv", # тройники
+    "ГОСТ 17375-2001": "/src/data/elbows/gost_17375-2001.csv",  # отводы
+    "ГОСТ 17376-2001": "/src/data/tees/gost_17376-2001.csv",  # тройники
 
-        "ГОСТ 17378-2001": "/src/data/transitions/gost_17378-2001.csv", # переходы
+    "ГОСТ 17378-2001": "/src/data/transitions/gost_17378-2001.csv",  # переходы
 
-        "КП ОСТ 36-146-88": "/src/data/supports/KP_OST_36-146-88.csv" # опоры  КП
+    "КП ОСТ 36-146-88": "/src/data/supports/KP_OST_36-146-88.csv"  # опоры  КП
     }
+
 
 @lru_cache(maxsize=5)  # Хранить до 5 различных ГОСТов
 def get_df_data(gost_name: str) -> pd.DataFrame:
@@ -47,7 +48,7 @@ def get_df_data(gost_name: str) -> pd.DataFrame:
     url = module_path + gost_paths[gost_name]
 
     df = pd.read_csv(url, sep=";")
-    df = df.loc[:, ~df.columns.str.contains('^Unnamed')] # Удаление ошибочных колонок
+    df = df.loc[:, ~df.columns.str.contains('^Unnamed')]  # Удаление ошибочных колонок
     df = df.replace(',', '.', regex=True)  # Замена запятой на точку
-    #df = df.apply(pd.to_numeric, errors='coerce')  # Приведение к числовому типу
+    # df = df.apply(pd.to_numeric, errors='coerce')  # Приведение к числовому типу
     return df

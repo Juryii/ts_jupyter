@@ -54,13 +54,12 @@ class PipeElbow:
         """
         Возвращает строковое представление объекта PipeElbow.
         """
-        
+
         if self.steel_grade != "Сталь 20":
             steel_grade_str = f"-{self.steel_grade}"
         else:
             steel_grade_str = ""
 
-        
         if self.elbow_type == 1:
             return f"Отвод {self.elbow_angle}-{self.elbow_type}-{self.elbow_dn}х{self.elbow_thickness}{steel_grade_str} {self.gost_name}"
         else:

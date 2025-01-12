@@ -1,6 +1,7 @@
 import pandas as pd
 from src.utils import get_df_data
 
+
 class PipeTee():
     """
     Класс для создания тройников трубопроводов.
@@ -18,6 +19,7 @@ class PipeTee():
         mass_per_tee (float): Масса одного тройника (кг).
         total_mass (float): Общая масса тройников (кг).
     """
+
     def __init__(self, tee_dn1, tee_thicknes1, tee_dn2, tee_thicknes2, tee_count, steel_grade="Сталь 20", gost_name="ГОСТ 17376-2001"):
         """
         Инициализирует объект PipeTee.
@@ -39,16 +41,16 @@ class PipeTee():
         # получение данных из ГОСТа
         df = get_df_data(gost_name)
         df = df.apply(pd.to_numeric, errors='coerce')  # Приведение к числовому типу
-        
+
         # проверка входных данных на соответствие с данными в ГОСТе
         checked_tee = self.__check_tee(df, tee_dn1, tee_thicknes1, tee_dn2, tee_thicknes2, gost_name)
-        
-        # Инициализация атрибутов   
-        
+
+        # Инициализация атрибутов
+
         # Определение номинального диаметра (DN) по наружному диаметру
         self.nominal_diameter = df[df['D'] == tee_dn1]['DN'].values[0]
-        
-        self.tee_dn1 = checked_tee['D'].values[0]  # Наружный диаметр магистрали        
+
+        self.tee_dn1 = checked_tee['D'].values[0]  # Наружный диаметр магистрали
         self.tee_thicknes1 = checked_tee['T'].values[0]  # Толщина стенки магистрали
         self.tee_dn2 = checked_tee['D1'].values[0]   # Наружный диаметр ответвления
         self.tee_thicknes2 = checked_tee['T1'].values[0]  # Толщина стенки магистрали
@@ -57,8 +59,7 @@ class PipeTee():
         self.gost_name = gost_name
         self.tee_type = checked_tee['Execution'].values[0]  # Исполнение тройника, колнка execution
         self.mass_per_tee = checked_tee['mass'].values[0]  # масса одного тройника
-        self.total_mass = round(self.tee_count * self.mass_per_tee) # общая масса тройников
-        
+        self.total_mass = round(self.tee_count * self.mass_per_tee)  # общая масса тройников
 
     def __str__(self):
         """
@@ -108,13 +109,13 @@ class PipeTee():
         Исключения:
             ValueError: Если параметры отсутствуют в ГОСТ.
         """
-        
+
         # Проверка наличия диаметра магистрали
         if tee_dn1 not in df['D'].values:
             raise ValueError(
                 f"Диаметр {tee_dn1} отсутствует в {gost_name}."
             )
-    
+
         # Проверка наличия толщины стенки магистрали
         if tee_thicknes1 not in df[df['D'] == tee_dn1]['T'].values:
             available_thicknesses1 = df[df['D'] == tee_dn1]['T'].dropna().unique()
@@ -122,13 +123,13 @@ class PipeTee():
                 f"Толщина стенки {tee_thicknes1} для магистрали {tee_dn1} отсутствует в {gost_name}. "
                 f"Доступные толщины: {', '.join(map(str, available_thicknesses1))}."
             )
-    
+
         # Проверка наличия диаметра ответвления
         if tee_dn2 not in df['D1'].values:
             raise ValueError(
                 f"Диаметр {tee_dn2} отсутствует в {gost_name}."
             )
-    
+
         # Проверка наличия толщины стенки ответвления
         if tee_thicknes2 not in df[df['D1'] == tee_dn2]['T1'].values:
             available_thicknesses2 = df[df['D1'] == tee_dn2]['T1'].dropna().unique()
@@ -136,7 +137,7 @@ class PipeTee():
                 f"Толщина стенки {tee_thicknes2} для ответвления {tee_dn2} отсутствует в {gost_name}. "
                 f"Доступные толщины: {', '.join(map(str, available_thicknesses2))}."
             )
-    
+
         # Проверка наличия полной комбинации параметров
         df_tee = df[
             (df['D'] == tee_dn1) &
@@ -153,27 +154,26 @@ class PipeTee():
                 f"отсутствует в ГОСТ {gost_name}. \n"
                 f"Проопробуйте следующие комбинации толщин стенок: {formatted_combinations}."
             )
-    
+
         return df_tee
 
     def get_available_thickness_combinations(self, df, tee_dn1, tee_dn2):
         """
         Возвращает доступные комбинации толщин стенок для заданных диаметров магистрали и ответвления.
-    
+
         Параметры:
             df (DataFrame): DataFrame с данными о тройниках.
             tee_dn1 (float): Наружный диаметр магистрали тройника.
             tee_dn2 (float): Наружный диаметр ответвления тройника.
-    
+
         Возвращает:
             List[Tuple[float, float]]: Список доступных комбинаций (толщина магистрали, толщина ответвления).
         """
         # Фильтрация DataFrame по диаметрам
         filtered_df = df[(df['D'] == tee_dn1) & (df['D1'] == tee_dn2)]
-    
+
         # Извлечение уникальных комбинаций толщин стенок
         available_combinations = filtered_df[['T', 'T1']].dropna().drop_duplicates()
-    
+
         # Преобразование в список кортежей
         return list(available_combinations.itertuples(index=False, name=None))
-            
